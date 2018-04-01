@@ -1,0 +1,37 @@
+<br>
+<br>
+<div class="container" id="myRecipes">
+
+  <input type="text" id="searchField" (keyup)="searchMyRecipes()" placeholder="Search for recipes..">
+
+  <table class="table table-striped table-bordered table-hover" id="myRecipesTable">
+    <thead class="thead-dark">
+      <th style="text-align: center; vertical-align: middle"><div class="checkbox checkbox-success"><input type="checkbox" id="rootCheck" (click)="checkAll('checkSingle')"></div></th>
+      <th scope ="col"class="text-center">Name</th>
+      <th scope ="col"class="text-center">Volume</th>
+      <th scope="col" class="text-center">Strength</th>
+      <th scope="col" class="text-center">Nicotine Juice</th>
+      <th scope="col" class="text-center">PG</th>
+      <th scope="col" class="text-center">VG</th>
+      <th scope="col" class="text-center">Flavor</th>
+      <th scope ="col"class="text-center">Date</th>
+      <th scope ="col"class="text-center">Action</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let recipe of recipes">
+      <td style="text-align: center; vertical-align: middle"><div class="checkbox checkbox-success"><input type="checkbox" id="checkSingle"></div></td>
+      <td class="text-center">{{recipe.name}}</td>
+      <td class="text-center">{{recipe.volume}} ml</td>
+      <td class="text-center">{{recipe.total_strength}} mg</td>
+      <td class="text-center"><span class="text-muted text-center">{{recipe.nic_strength}} mg <small>({{recipe.nic_pg}}/{{recipe.nic_vg}} PG/VG)</small></span> {{recipe.nic_vol}} ml</td>
+      <td class="text-center">{{recipe.des_pg}} ml</td>
+      <td class="text-center">{{recipe.des_vg}} ml</td>
+      <td class="text-center">{{recipe.flavor}} ml</td>
+      <td class="text-center">{{recipe.date}}</td>
+      <td align="center">
+        <input type="button" class="btn btn-sm btn-danger" (click)="deleteRecipe(recipe._id)" value="Delete" >
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

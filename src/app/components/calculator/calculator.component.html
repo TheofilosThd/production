@@ -1,0 +1,138 @@
+
+<br>
+<div class="row">
+  <div class="col-6">
+<div class="container" style="width: 80%" id="recipeForm">
+  <form (change)="calculateNicJuice() || progressBars() ||hideTable() " (submit)="addRecipe()">
+    <div class="form-group row">
+      <label for="name" class="col-sm-5">Recipe name </label>
+      <div class="col-sm-7 input-group mb-3">
+        <input type="text"  [(ngModel)]="name" name="name" class="form-control form-control-sm">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="quantity" class="col-sm-5">Amount to make </label>
+      <div class="col-sm-7 input-group mb-3 input-group-sm" >
+        <input type="number" min="0" [(ngModel)]="quantity" name="quantity" class="form-control form-control-sm">
+        <div class="input-group-append ">
+          <span class="input-group-text">ml</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="strength" class="col-sm-5">Desired Strength</label>
+      <div class="col-sm-7 input-group mb-3 input-group-sm">
+      <input type="number" min="0" [(ngModel)]="strength" name="strength" class="form-control form-control-sm">
+        <div class="input-group-append">
+          <span class="input-group-text">mg</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="pg" class="col-sm-5">Desired PG</label>
+      <div class="col-sm-7 input-group mb-3 input-group-sm">
+      <input (change)="calculateVGleft()" type="number" min="0" max="100" [(ngModel)]="pg" name="pg" class="form-control form-control-sm">
+        <div class="input-group-append" >
+          <span class="input-group-text">%</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="vg" class="col-sm-5">Desired VG</label>
+      <div class="col-sm-7 input-group mb-3 input-group-sm">
+      <input (change)="calculatePGleft()" type="number" min="0" max="100" [(ngModel)]="vg" name="vg" class="form-control form-control-sm">
+        <div class="input-group-append">
+          <span class="input-group-text">%</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="nicStrength" class="col-sm-5">Nicotine Strength</label>
+      <div class="col-sm-7 input-group mb-3 input-group-sm">
+      <input type="number" min="0" max="100" [(ngModel)]="nicStrength" name="nicStrength" class="form-control form-control-sm">
+        <div class="input-group-append">
+          <span class="input-group-text">mg</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="nicPG" class="col-sm-5">PG-content of nicotine</label>
+      <div class="col-sm-7 input-group mb-3 input-group-sm">
+      <input (change)="calculateVGleft()" type="number" min="0" max="100" [(ngModel)]="nicPG" name="nicPG" class="form-control form-control-sm">
+        <div class="input-group-append">
+          <span class="input-group-text">%</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="nicVG" class="col-sm-5">VG-content of nicotine</label>
+      <div class="col-sm-7 input-group mb-3 input-group-sm">
+      <input (change)="calculatePGleft()" type="number" min="0" max="100" [(ngModel)]="nicVG" name="nicVG" class="form-control form-control-sm" >
+        <div class="input-group-append">
+          <span class="input-group-text">%</span>
+        </div>
+      </div>
+    </div>
+    <!--<button type="button" (click)="toggleFlavor()" id="flavorBtn" class="btn btn-dark" style="display: block; margin: 0 auto;">Add Flavor</button>-->
+    <div class="form-group row">
+      <label for="flavor" class="col-sm-5">Flavor</label>
+      <div class="col-sm-7 input-group mb-3 input-group-sm">
+      <input  type="number" min="0" max="100" [(ngModel)]="flavor" name="flavor" class="form-control form-control-sm">
+        <div class="input-group-append">
+          <span class="input-group-text">%</span>
+        </div>
+      </div>
+    </div>
+    <button type="submit" value="Save recipe" class="btn btn-dark" style="display: block; margin: 0 auto; margin-top: 10px; margin-right:0px;"><span class="align-content-start"><img src="../assets/images/save_logo.png"></span> Save</button>
+  </form>
+</div>
+  </div>
+  <div class="col-6">
+<br>
+<div class="container-flex " id="recipeTable" style="width: 70%">
+  <table class="table table-striped table-bordered table-hover table-sm" style="margin-top: 12%">
+    <thead class="thead-dark">
+      <th scope ="col">Total : {{quantity}} ml</th>
+      <th scope="col" class="text-center">ml</th>
+      <th scope="col" class="text-center">Grams</th>
+    </thead>
+    <tr>
+      <th>Nicotine Juice : <span class="text-muted">{{nicStrength}} mg <small>({{nicPG}}/{{nicVG}} PG/VG)</small></span> </th>
+      <th class="text-center">{{recipe.nicBase}} ml</th>
+      <th class="text-center">{{convertNictoGr(nicPG,nicVG)}} gr</th>
+    </tr>
+    <tr>
+      <th>PG dilutant : </th>
+      <th class="text-center">{{recipe.pgBase}} ml</th>
+      <th class="text-center">{{convertPGtoGr(recipe.pgBase)}} gr</th>
+    </tr>
+    <tr>
+      <th>VG dilutant :</th>
+      <th class="text-center">{{recipe.vgBase}} ml</th>
+      <th class="text-center">{{convertVGtoGr(recipe.vgBase)}} gr</th>
+    </tr>
+    <!--<tr *ngIf="flavorShow">-->
+    <tr>
+      <th>Flavor :</th>
+      <th class="text-center">{{recipe.flavorQnt}} ml</th>
+      <th class="text-center">{{recipe.flavorQnt}} gr</th>
+    </tr>
+  </table>
+</div>
+  </div>
+</div>
+<br>
+<div class="container" id="recipeProgress">
+  <div class="progress"  style="height: 50px; ">
+    <div id="nicProgress" class="progress-bar bg-success progress-bar-striped progress-bar-animated" style ="width:0%">Nicotine {{pbPercentage(recipe.nicBase)}} %</div>
+    <div id="pgProgress" class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style ="width:0%">PG {{pbPercentage(recipe.pgBase)}} %</div>
+    <div id="vgProgress" class="progress-bar progress-bar-striped progress-bar-animated" style ="width:0%">VG {{pbPercentage(recipe.vgBase)}} %</div>
+    <div id="flProgress" class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style ="width:0%">Flavor {{pbPercentage(recipe.flavorQnt)}} %</div>
+  </div>
+</div>
+
+<br>
+
+<br>
+
+
